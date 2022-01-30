@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: release
+spec:
+  pipelineSpec:
+    tasks:
+      - name: from-build-pack
+        resources: {}
+        taskSpec:
+          metadata: {}
+          stepTemplate:
+            image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@b8c01fa3c78e49707b1664fd573cbe2d129a2b78
+            resources:
+              requests:
+                cpu: 400m
+                memory: 600Mi
+            workingDir: /workspace/source
+          steps:
+            - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
+              name: ""
+            - name: next-version
+              resources: {}
+            - name: jx-variables
+              resources: {}
+            - name: lint
+              resources: {}
+            - name: changelog
+              resources: {}
+            - name: promote
+              resources: {}
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 240h0m0s
+status: {}

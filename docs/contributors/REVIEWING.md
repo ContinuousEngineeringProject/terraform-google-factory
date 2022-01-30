@@ -47,7 +47,7 @@ Here's the process the pull request goes through on its way from submission to m
 1. Make the pull request
 1. `@ceProject-bot` assigns reviewers
 
-1. If you're **not** a member of the HillSheep Studios organization, a Reviewer Member checks that the pull request is safe to test. If so, they comment `/ok-to-test`. Pull requests by HillSheep Studios organization members do not need this step. Now the pull request is considered to be trusted, and the pre-submit tests will run:
+1. If you're **not** a member of the Continuous Engineering Project organization, a Reviewer Member checks that the pull request is safe to test. If so, they comment `/ok-to-test`. Pull requests by HillSheep Studios organization members do not need this step. Now the pull request is considered to be trusted, and the pre-submit tests will run:
 
     1. Automatic tests run.
     1. If tests fail, resolve issues by pushing edits to your pull request branch
@@ -253,7 +253,7 @@ If you find one grammatical or spelling error, it is likely there are more in th
 [How2PR]: https://help.github.com/articles/about-pull-requests/
 [Tide]: https://git.k8s.io/test-infra/prow/cmd/tide
 [Slack]: https://continuousengproject.slack.com
-[GitHubTeam]: https://github.com/orgs/HillSheepStudios/teams
+[GitHubTeam]: https://github.com/orgs/ContinuousEngineeringProject/teams
 [GoDoc]: https://blog.golang.org/godoc-documenting-go-code
 [MergePool]: https://prow.k8s.io/tide
 [ProwCmd]: https://prow.k8s.io/command-help

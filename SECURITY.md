@@ -1,6 +1,6 @@
 # Security Policy
 
-The :project project takes security seriously. We make every possible effort to ensure users can adequately secure their automation infrastructure.
+The Continuous Engineering Factory GKE Module project takes security seriously. We make every possible effort to ensure users can adequately secure their automation infrastructure.
 
 ## Supported Versions
 

@@ -20,7 +20,6 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
     - [Prerequisites](#prerequisites)
     - [Inputs](#inputs)
     - [Outputs](#outputs)
-    - [Using a custom domain](#using-a-custom-domain)
     - [Configuring a Terraform backend](#configuring-a-terraform-backend)
 - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-factory module](#how-do-i-get-the-latest-version-of-the-terraform-google-factory-module)
@@ -43,25 +42,23 @@ For more information around modules refer to the Terraform [documentation](https
 
 ### Prerequisites
 
-<!-- ToDo: Update this section with the appropriate prerequisites -->
-
-- [terraform-docs](https://terraform-docs.io) - for OSX `brew install terraform-docs`
-
-
+<!-- ToDo: Update with the local prerequisites -->
 
 Ensure you have the following binaries installed:
-
 - `gcloud`
 - `kubectl` ~> 1.14.0
-    - `kubectl` comes bundled with the Cloud SDK
+  - `kubectl` comes bundled with the Cloud SDK
 - `terraform` ~> 0.12.0
-    - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
-- `terraform-docs`  
-    - Terraform-docs installation instructions can be forund [here](https://terraform-docs.io/user-guide/installation/)
+  - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
+- `terraform-docs`
+  - Terraform-docs installation instructions can be found [here](https://terraform-docs.io/user-guide/installation/)
 
-Or run from the docker image 
-
-<!-- 
+<!-- ToDo: Update with docker prerequisites -->
+Alternatively you could run from the docker image provided in the project.
+- `docker`
+  - Docker installation instructions can be found [here](https://docs.docker.com/engine/install/)
+-->
+<!--
 You also need to install the Cloud SDK, in particular `gcloud`.
 You find instructions on how to install and authenticate in the [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide as well.
 
@@ -71,7 +68,7 @@ Once you have `gcloud` installed, you need to create [Application Default Creden
 gcloud auth application-default login
 ```
 
-Alternatively, you can export the environment variable _GOOGLE\_APPLICATION\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+Alternatively, you can export the environment variable _GOOGLE\\_APPLICATION\\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
 -->
 
 ## Inputs
@@ -86,6 +83,7 @@ Alternatively, you can export the environment variable _GOOGLE\_APPLICATION\_CRE
 
 No outputs.
 
+<!--
 ## Using a custom domain
 
 If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _apex\\_domain_ and \_tls\\_email\_.
@@ -93,11 +91,11 @@ If you want to use a custom domain with your Jenkins X installation, you need to
 
 Before you apply the Terraform configuration, you also need to create a [Cloud DNS managed zone](https://cloud.google.com/dns/zones), with the DNS name in the managed zone matching your custom domain name, for example in the case of _example.jenkins-x.rocks_ as domain:
 
-![Creating a Managed Zone](./images/create\_managed\_zone.png)
+[Creating a Managed Zone](./images/create\_managed\_zone.png)
 
 When creating the managed zone, a set of DNS servers get created which you need to specify in the DNS settings of your DNS registrar.
 
-![DNS settings of Managed Zone](./images/managed\_zone\_details.png)
+[DNS settings of Managed Zone](./images/managed\_zone\_details.png)
 
 It is essential that before you run `jx boot`, your DNS servers settings are propagated, and your domain resolves.
 You can use [DNS checker](https://dnschecker.org/) to check whether your domain settings have propagated.
@@ -105,6 +103,7 @@ You can use [DNS checker](https://dnschecker.org/) to check whether your domain 
 When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) together with [cert-manager](https://github.com/jetstack/cert-manager) to create A record entries in your managed zone for the various exposed applications.
 
 If _apex\_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
+-->
 
 ## Configuring a Terraform backend
 
@@ -135,7 +134,7 @@ gsutil versioning get gs://<my-bucket-name>
 
 ## FAQ
 
-### How do I get the latest version of the terraform-google-factory module
+### How do I get the latest version of the module
 
 ```sh
 terraform init -upgrade
@@ -190,9 +189,9 @@ We use [SemVer][SEMVER] for versioning. For the versions available, see the [tag
 
 Licensed under the MIT license - see the [LICENSE][LICENSE] file for details.
 
-[LICENSE]: LICENSE
+[LICENSE]: ../LICENSE
 [SEMVER]: http://semver.org/
-[COC]: CODE\_OF\_CONDUCT.md
-[CONTRIB]: CONTRIBUTING.md
+[COC]: ../CODE\_OF\_CONDUCT.md
+[CONTRIB]: ../CONTRIBUTING.md
 [REPOTAGS]: https://github.com/continuousengineeringproject/terraform-google-factory/tags
 <!-- END_TF_DOCS -->

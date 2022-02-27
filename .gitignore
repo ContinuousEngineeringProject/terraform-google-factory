@@ -24,3 +24,9 @@ gen
 .terraform/
 *.tfstate
 *.tfstate*
+*.auto.tfvars
+.terraform.lock.hcl
+
+# Other files
+credentials.json
+.kitchen

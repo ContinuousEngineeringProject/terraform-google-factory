@@ -19,7 +19,6 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
     - [Prerequisites](#prerequisites)
     - [Inputs](#inputs)
     - [Outputs](#outputs)
-    - [Using a custom domain](#using-a-custom-domain)
     - [Configuring a Terraform backend](#configuring-a-terraform-backend)
 - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-factory module](#how-do-i-get-the-latest-version-of-the-terraform-google-factory-module)
@@ -42,15 +41,23 @@ For more information around modules refer to the Terraform [documentation](https
 
 ### Prerequisites
 
-<!-- ToDo: Update this section with the appropriate prerequisites -->
+<!-- ToDo: Update with the local prerequisites -->
 
-- [Git](https://git-scm.com/) and a [GitHub](https://github.com/) account. Details on [configuring Git](docs/contributors/GIT_CONFIG.md/#Git-Configuration) for the project.
-- [terraform-docs](https://terraform-docs.io) - for OSX `brew install terraform-docs`
+Ensure you have the following binaries installed:
+- `gcloud`
+- `kubectl` ~> 1.14.0
+  - `kubectl` comes bundled with the Cloud SDK
+- `terraform` ~> 0.12.0
+  - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
+- `terraform-docs`
+  - Terraform-docs installation instructions can be found [here](https://terraform-docs.io/user-guide/installation/)
 
-To make use of this module, you need a Google Cloud project.
-Instructions on how to setup such a project can be found in the  [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide.
-You need your Google Cloud project id as an input variable for using this module.
-
+<!-- ToDo: Update with docker prerequisites -->
+Alternatively you could run from the docker image provided in the project.
+- `docker`
+  - Docker installation instructions can be found [here](https://docs.docker.com/engine/install/)
+-->
+<!-- 
 You also need to install the Cloud SDK, in particular `gcloud`.
 You find instructions on how to install and authenticate in the [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide as well.
 
@@ -60,13 +67,5 @@ Once you have `gcloud` installed, you need to create [Application Default Creden
 gcloud auth application-default login
 ```
 
-Alternatively, you can export the environment variable _GOOGLE_APPLICATION_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
-
-Last but not least, ensure you have the following binaries installed:
-
-- `gcloud`
-- `kubectl` ~> 1.14.0
-    - `kubectl` comes bundled with the Cloud SDK
-- `terraform` ~> 0.12.0
-    - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
-    
+Alternatively, you can export the environment variable _GOOGLE\_APPLICATION\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+-->

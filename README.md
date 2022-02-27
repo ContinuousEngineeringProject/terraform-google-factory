@@ -45,13 +45,23 @@ For more information around modules refer to the Terraform [documentation](https
 
 <!-- ToDo: Update this section with the appropriate prerequisites -->
 
-- [Git](https://git-scm.com/) and a [GitHub](https://github.com/) account. Details on [configuring Git](docs/contributors/GIT\_CONFIG.md/#Git-Configuration) for the project.
 - [terraform-docs](https://terraform-docs.io) - for OSX `brew install terraform-docs`
 
-To make use of this module, you need a Google Cloud project.
-Instructions on how to setup such a project can be found in the  [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide.
-You need your Google Cloud project id as an input variable for using this module.
 
+
+Ensure you have the following binaries installed:
+
+- `gcloud`
+- `kubectl` ~> 1.14.0
+    - `kubectl` comes bundled with the Cloud SDK
+- `terraform` ~> 0.12.0
+    - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
+- `terraform-docs`  
+    - Terraform-docs installation instructions can be forund [here](https://terraform-docs.io/user-guide/installation/)
+
+Or run from the docker image 
+
+<!-- 
 You also need to install the Cloud SDK, in particular `gcloud`.
 You find instructions on how to install and authenticate in the [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide as well.
 
@@ -62,21 +72,15 @@ gcloud auth application-default login
 ```
 
 Alternatively, you can export the environment variable _GOOGLE\_APPLICATION\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
-
-Last but not least, ensure you have the following binaries installed:
-
-- `gcloud`
-- `kubectl` ~> 1.14.0
-    - `kubectl` comes bundled with the Cloud SDK
-- `terraform` ~> 0.12.0
-    - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
-    
+-->
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_billing_account"></a> [billing\_account](#input\_billing\_account) | The ID of the billing account to associate this project with | `string` | n/a | yes |
 | <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | The name of the GCP project to use | `string` | n/a | yes |
+| <a name="input_org_id"></a> [org\_id](#input\_org\_id) | The organization ID. | `string` | n/a | yes |
 
 ## Outputs
 

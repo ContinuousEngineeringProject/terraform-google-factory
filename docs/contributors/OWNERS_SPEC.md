@@ -1,14 +1,21 @@
 # OWNERS files
 
-## Overview
+- [Overview](#overview)
+- [OWNERS](#owners)
+- [OWNERS_ALIASES](#owners_aliases)
+- [Code Review using OWNERS files](#code-review-using-owners-files)
+  * [The Code Review Process](#the-code-review-process)
+  * [Quirks of the Process](#quirks-of-the-process)
+- [Maintaining OWNERS files](#maintaining-owners-files)
 
+
+## Overview
 OWNERS files are used to designate responsibility over different parts of the codebase. Today, we use them to assign the **reviewer** and **approver** roles used in our two-phase code review process. The OWNERS files were inspired by [Chromium OWNERS files](https://chromium.googlesource.com/chromium/src/+/master/docs/code_reviews.md), which in turn inspired [GitHub's CODEOWNERS files][CODEOWNERS].
 
 The velocity of a project that uses code review is limited by the number of people capable of reviewing code. The quality of a person's code review is limited by their familiarity with the code under review. Our goal is to address both of these concerns through the prudent use and maintenance of OWNERS files.
 
 
-### OWNERS
-
+## OWNERS
 Each directory that contains a unit of independent code or content may also contain an OWNERS file. This file applies to everything within the directory, including the OWNERS file itself, sibling files, and child directories.
 
 OWNERS files are in YAML format and support the following keys:
@@ -35,37 +42,8 @@ reviewers:
   - sig-foo # this is an alias
 ```
 
-#### Filters
 
-An OWNERS file may also include a `filters` key. The `filters` key is a map whose keys are [Go regular expressions][GO-REGEX] and whose values are [simple OWNERS configurations](#owners). The regular expression keys are matched against paths relative to the OWNERS file in which the keys are declared. For example:
-
-```yaml
-filters:
-  ".*":
-    labels:
-    - re/all
-  "\\.go$":
-    labels:
-    - re/go
-```
-
-If you set `filters` you must not set a [simple OWNERS configuration](#owners) outside of `filters`. For example:
-
-```yaml
-# WARNING: This use of 'labels' and 'filters' as siblings is invalid.
-labels:
-- re/all
-filters:
-  "\\.go$":
-    labels:
-    - re/go
-```
-
-Instead, set a `.*` key inside `filters` (as shown in the previous example).
-
-
-### OWNERS_ALIASES
-
+## OWNERS_ALIASES
 Each repo may contain at its root an OWNERS_ALIAS file.
 
 OWNERS_ALIAS files are in YAML format and support the following keys:
@@ -86,12 +64,11 @@ aliases:
 
 GitHub usernames and aliases listed in OWNERS files are case-insensitive.
 
-## Code Review using OWNERS files
 
+## Code Review using OWNERS files
 This is a simplified description of our [full PR testing and merge workflow][MERGEWORKFLOW] that conveniently forgets about the existence of tests, to focus solely on the roles driven by OWNERS files.
 
 ### The Code Review Process
-
 - The **author** submits a PR
 - Phase 0: Automation suggests **reviewers** and **approvers** for the PR
   - Determine the set of OWNERS files nearest to the code being changed
@@ -119,7 +96,6 @@ This is a simplified description of our [full PR testing and merge workflow][MER
   - Then the PR will automatically be merged
 
 ### Quirks of the Process
-
 There are a number of behaviors we've observed that while _possible_ are discouraged, as they go against the intent of this review process.  Some of these could be prevented in the future, but this is the state of today.
 
 - An **approver**'s `/lgtm` is simultaneously interpreted as an `/approve`
@@ -147,10 +123,7 @@ There are a number of behaviors we've observed that while _possible_ are discour
   - Instead, close PR's that are untouched after too long (we currently have a bot do this after 90 days)
 
 ## Maintaining OWNERS files
-
-OWNERS files should be regularly maintained.
-
-We encourage people to self-nominate or self-remove from OWNERS files via PR's. Ideally in the future we could use metrics-driven automation to assist in this process.
+OWNERS files should be regularly maintained. We encourage people to self-nominate or self-remove from OWNERS files via PR's. Ideally in the future we could use metrics-driven automation to assist in this process.
 
 We should strive to:
 

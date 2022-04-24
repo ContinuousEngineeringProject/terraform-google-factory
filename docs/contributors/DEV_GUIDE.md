@@ -1,12 +1,48 @@
-# Git Guide
-<!-- ToDo: Refactor Git Guide-->
+# Development Guide
+This doc explains the development guide for the project when contributing to the codebase. It should serve as a reference for all contributors, and be useful especially to new and infrequent submitters.
 
-- [Create a new branch](#Create-a-new-branch)
-- [Push commits](#Push-commits)
-- [Build your change](#Build-your-change)
-- [Squash and rebase](#Squash-and-rebase)
-- [Signoff](#Signoff)
-- [Commit message guidelines](#Commit-message-guidelines)
+<!-- TOC -->
+- [Git Recipes](#git-recipes)
+  * [Commit message Guidelines](#commit-message-guidelines)
+  * [Create a new branch](#Create-a-new-branch)
+  * [Push commits](#Push-commits)
+  * [Squash and rebase](#Squash-and-rebase)
+  * [Signoff](#Signoff)
+- [PR Preparation Recipes](#pr-preparation-recipes)
+  * [Unit Tests](#unit-testing)
+  * [Integration Tests](#integration-testing)
+  * [end-to-end Tests](#end-to-end-testing)
+  * [Linting and Formatting](#Linting-and-Formatting)
+  * [Generating terraform docs](#Generating-terraform-docs)
+<!-- /TOC -->
+
+
+## Git Recipes
+This section contains various recipes for using git.
+
+### Commit message Guidelines
+The project uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) as it's commit message format. These are particularly important as semantic releases are in use, and they use the commit messages to determine the type of changes in the codebase. Following formalized conventions for commit messages the semantic release automatically determines the next [semantic version](https://semver.org) number and generates a changelog based on the conventional commit.
+
+The commit message should be structured as follows:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+The commit contains the following structural elements, to communicate intent:
+
+1. Any line of the commit message cannot be longer 100 characters! This allows the message to be easier to read on GitHub as well as in various git tools.
+2. The _description_ contains a succinct statement of the change. It should use the imperative, present tense: "change" not "changed" nor "changes", don't capitalize the first letter and no dot (.) at the end.
+3. `fix:` a commit of the _type_ fix patches a bug in the codebase (this correlates with `PATCH` in Semantic Versioning).
+4. `feat:` a commit of the _type_ `feat` introduces a new feature to the codebase (this correlates with `MINOR` in Semantic Versioning).
+5. `BREAKING CHANGE:` a commit that has a _footer_ `BREAKING CHANGE:`, or appends a `!` after the _type/scope_, introduces a breaking API change (correlating with `MAJOR` in Semantic Versioning). A `BREAKING CHANGE` can be part of commits of any _type_.
+6. _types_ other than `fix:` and `feat:` are allowed, such as `chore:`, `refactor:` & `docs:` but will have no implicit effect in Semantic Versioning (unless they include a BREAKING CHANGE).
+7. _footers_ other than `BREAKING CHANGE:` may be provided and follow a convention similar to [git trailer format](https://git-scm.com/docs/git-interpret-trailers).
+8. A **scope** may be provided to a commit’s _type_, to provide additional contextual information and is contained within parenthesis, e.g., `feat(parser): add ability to parse arrays`.
 
 
 ### Create a new branch
@@ -26,6 +62,7 @@ git checkout -b <BRANCH-NAME>
 
 You can check on which branch your on with `git branch`. You should see a list of all local branches. The current branch is indicated with a little asterisk.
 
+
 ### Push commits
 To push our commits to the fork on GitHub you need to specify a destination. A destination is defined by the remote, and a branch name. Earlier, the remote url of our fork was given the default name of `origin`. The branch should be given the same name as our local one. This makes it easy to identify corresponding branches.
 
@@ -38,7 +75,7 @@ Now Git knows the destination. Next time when you want to push commits you just 
 ### Squash and rebase
 So you are happy with your development and are ready to prepare the PR. Before going further, let's squash and rebase your work.
 
-This is a bit more advanced but required to ensure a proper Git history of Continuous Engineering Factory GKE Module. Git allows you to [rebase](https://git-scm.com/docs/git-rebase) commits. In other words: it allows you to rewrite the commit history.
+This is a bit more advanced but required to ensure a proper Git history of The project. Git allows you to [rebase](https://git-scm.com/docs/git-rebase) commits. In other words: it allows you to rewrite the commit history.
 
 Let's take an example.
 
@@ -49,17 +86,17 @@ git rebase --interactive @~3
 The `3` at the end of the command represents the number of commits that should be modified. An editor should open and present a list of last three commit messages:
 
 ```sh
-pick 911c35b Add "How to contribute to Continuous Engineering Factory GKE Module" tutorial
+pick 911c35b Add "How to contribute to The project" tutorial
 pick 33c8973 Begin workflow
 pick 3502f2e Refactoring and typo fixes
 ```
 
-In the case above we should merge the last 2 commits in the commit of this tutorial (`Add "How to contribute to Continuous Engineering Factory GKE Module" tutorial`). You can "squash" commits, i.e. merge two or more commits into a single one.
+In the case above we should merge the last 2 commits in the commit of this tutorial (`Add "How to contribute to The project" tutorial`). You can "squash" commits, i.e. merge two or more commits into a single one.
 
 All operations are written before the commit message. Replace `pick` with an operation. In this case `squash` or `s` for short:
 
 ```sh
-pick 911c35b Add "How to contribute to Continuous Engineering Factory GKE Module" tutorial
+pick 911c35b Add "How to contribute to The project" tutorial
 squash 33c8973 Begin workflow
 squash 3502f2e Refactoring and typo fixes
 ```
@@ -69,7 +106,7 @@ We also want to rewrite the commits message of the third last commit. We forgot 
 You should end up with a similar setup:
 
 ```sh
-reword 911c35b Add "How to contribute to Continuous Engineering Factory GKE Module" tutorial
+reword 911c35b Add "How to contribute to The project" tutorial
 squash 33c8973 Begin workflow
 squash 3502f2e Refactoring and typo fixes
 ```
@@ -105,7 +142,7 @@ Handle any conflicts and make sure your code builds and all tests pass. Then for
 ### Signoff
 A [Developer Certificate of Origin](https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin) is required for all commits. It can be provided using the [signoff](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---signoff) option for `git commit` or by GPG signing the commit. The developer certificate is available at (https://developercertificate.org/).
 
-Continuous Engineering Factory GKE Module enforces the DCO using the a [bot](https://github.com/probot/dco). You can view the details on the DCO check by viewing the `Checks` tab in the GitHub pull request.
+The project enforces the DCO using the a [bot](https://github.com/probot/dco). You can view the details on the DCO check by viewing the `Checks` tab in the GitHub pull request.
 
 ![DCO signoff check](https://user-images.githubusercontent.com/13410355/42352794-85fe1c9c-8071-11e8-834a-05a4aeb8cc90.png)
 
@@ -176,69 +213,23 @@ chmod u+x ~/.git-templates/hooks/prepare-commit-msg
 
 Note that this will not override the hooks already defined on your local repo. It adds the `Signed-off-by: ...` line after the commit message has been created by the user.
 
-### Commit message guidelines
-Continuous Engineering Factory GKE Module uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) as it's commit message format. These are particularly important as semantic releases are in use, and they use the commit messages to determine the type of changes in the codebase. Following formalized conventions for commit messages the semantic release automatically determines the next [semantic version](https://semver.org) number and generates a changelog based on the conventional commit.
 
-Semantic releases originate in the [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines), and the rules described there are the ones used by Continuous Engineering Factory GKE Module
+## PR Preparation Checks
+Prior to creating a pull request you will need to perform a set of checks, you can execute `make pr-prep` to run all the checks.
 
-Here is an example of the release type that will be done based on a commit messages:
+### Unit Testing
+[Unit Tests](./TEST_GUIDE.md#unit-testing)
 
-| Commit message | Release type |
-|---|---|
-| `fix(pencil): stop graphite breaking when too much pressure applied` | Patch Release |
-| `feat(pencil): add 'graphiteWidth' option` | ~~Minor~~ Feature Release  |
-| `perf(pencil): remove graphiteWidth option`<br><br>`BREAKING CHANGE: The graphiteWidth option has been removed.`<br>`The default graphite width of 10mm is always used for performance reasons.` | ~~Major~~ Breaking Release |
+### Integration Testing
+[Integration Tests](./TEST_GUIDE.md#integration-testing)
 
-#### Commit message format
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
-format that includes a **type**, a **scope** and a **subject**:
+### End-to-End Testing
+[end-to-end Tests](./TEST_GUIDE.md#end-to-end-testing)
 
-```
-<type>(<scope>): <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
+### Linting and Formatting
+The CI build will fail on lint issues. Run `make lint` to ensure your code is meetings formatting and linting requirements.
 
-The **header** is mandatory and the **scope** of the header is optional.
+### Generating terraform docs
+The Inputs and Outputs sections in the READMEs of the root module, submodules, and example modules are automatically generated based on the `variables` and `outputs` of the respective modules. These tables must be refreshed if the module interfaces are changed.
 
-Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
-to read on GitHub as well as in various git tools.
-
-#### Revert
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
-
-#### Type
-Must be one of the following:
-
-- **build**: Changes that affect the build system or external dependencies
-- **chore**: Changes that will not affect production code
-- **ci**: Changes to our CI configuration files and scripts
-- **docs**: Documentation only changes
-- **feat**: A new feature
-- **fix**: A bug fix
-- **perf**: A code change that improves performance
-- **refactor**: A code change that neither fixes a bug nor adds a feature
-- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- **test**: Adding tests or correcting existing tests
-
-#### Scope
-The scope should be the name of the package affected (as perceived by the person reading the changelog generated from commit messages).
-
-#### Subject
-The subject contains a succinct description of the change:
-
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
-
-#### Body
-Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
-The body should include the motivation for the change and contrast this with previous behavior.
-
-#### Footer
-The footer should contain any information about **Breaking Changes** and is also the place to
-reference the issue(s) that this commit **Closes**.
-
-**Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
+Run `make generate-readme` to generate the READMEs for the root module, submodules, and example modules.

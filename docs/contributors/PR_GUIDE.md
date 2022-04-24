@@ -2,7 +2,10 @@
 
 This doc explains the process and best practices for submitting a pull request. It should serve as a reference for all contributors, and be useful especially to new and infrequent submitters.
 
+<!-- TOC -->
+
 - [Before You Submit a Pull Request](#before-you-submit-a-pull-request)
+  * [Pull Request message guidelines](#pull-request-message-guidelines) 
 - [The Pull Request Submit Process](#the-pull-request-submit-process)
   * [The Testing and Merge Workflow](#the-testing-and-merge-workflow)
   * [Marking Unfinished Pull Requests](#marking-unfinished-pull-requests)
@@ -22,13 +25,40 @@ This doc explains the process and best practices for submitting a pull request. 
   * [9. Common Sense and Courtesy](#9-common-sense-and-courtesy)
   * [10. Trivial Edits](#10-trivial-edits)
 
-# Before You Submit a Pull Request
+<!-- /TOC -->
 
-This guide is for contributors who already have a pull request to submit. First time contributors should head to the [Contributor Guide][Contribute] to get started.
+## Before You Submit a Pull Request
+Make sure your pull request adheres to our best practices. These include following project conventions, making small pull requests, and commenting thoroughly. Please read the more detailed section on [Best Practices for Faster Reviews](#best-practices-for-faster-reviews) at the end of this doc.
 
-**Make sure your pull request adheres to our best practices. These include following project conventions, making small pull requests, and commenting thoroughly. Please read the more detailed section on [Best Practices for Faster Reviews](#best-practices-for-faster-reviews) at the end of this doc.**
+### Pull Request message guidelines
+This project uses [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) as it's PR message format. These are particularly important as semantic releases are in use, and they use the PR message to determine the type of changes in the codebase. Following formalized conventions for PR messages the semantic release automatically determines the next [semantic version](https://semver.org) number and generates a changelog based on the conventional commit.
 
-# The Pull Request Submit Process
+The PR title should follow the below structured:
+
+```md
+<type>[optional scope]: <description>
+```
+
+And the PR description should follow the below structured:
+
+```md
+[optional body]
+
+[optional footer(s)]
+ContinuousEngineeringProject/issues#<number>
+```
+
+The PR contains the following structural elements, to communicate intent:
+
+1. `fix:` a PR of the _type_ fix patches a bug in the codebase (this correlates with `PATCH` in Semantic Versioning).
+2. `feat:` a PR of the _type_ `feat` introduces a new feature to the codebase (this correlates with `MINOR` in Semantic Versioning).
+3. `BREAKING CHANGE:` a PR that has a _footer_ `BREAKING CHANGE:`, or appends a `!` after the _type/scope_, introduces a breaking API change (correlating with `MAJOR` in Semantic Versioning). A `BREAKING CHANGE` can be part of PR's of any _type_.
+4. _types_ other than `fix:` and `feat:` are allowed, such as `chore:`, `refactor:` & `docs:` but will have no implicit effect in Semantic Versioning (unless they include a BREAKING CHANGE).
+5. _footers_ other than `BREAKING CHANGE:` may be provided and follow a convention similar to [git trailer format](https://git-scm.com/docs/git-interpret-trailers).
+6. A **scope** may be provided to a PR’s _type_, to provide additional contextual information and is contained within parenthesis, e.g., `feat(parser): add ability to parse arrays`.
+
+
+## The Pull Request Submit Process
 
 Merging a pull request requires the following steps to be completed before the pull request will be merged automatically.
 
@@ -36,28 +66,29 @@ Merging a pull request requires the following steps to be completed before the p
 - Pass all tests
 - Get all necessary approvals from reviewers and owners 
 
-## The Testing and Merge Workflow
+### The Testing and Merge Workflow
 
-The merge workflow uses labels, applied by [commands][ProwCmd] via comments. These will trigger actions on your pull request. Different ceProject repositories may require different labels on the path to approval. A generic explanation of how labels are used in pull requests can be found [here][Owners]. The pull request bot will also automatically apply and/or suggest labels.
+The merge workflow uses labels, applied by [commands][ChatOps] via comments. These will trigger actions on your pull request. Different ceProject repositories may require different labels on the path to approval. A generic explanation of how labels are used in pull requests can be found [here][Owners]. The pull request bot will also automatically apply and/or suggest labels.
 
 *NOTE: For pull requests that are in progress but not ready for review, prefix the pull request title with `WIP` or `[WIP]` and track any remaining ToDos in a checklist in the pull request description.*
 
 Here's the process the pull request goes through on its way from submission to merging:
 
 1. Make the pull request
-1. `@ceProject-bot` assigns reviewers
+2. `@ceProject-bot` assigns reviewers
 
-1. If you're **not** a member of the Continuous Engineering Project organization, a Reviewer Member checks that the pull request is safe to test. If so, they comment `/ok-to-test`. Pull requests by HillSheep Studios organization members do not need this step. Now the pull request is considered to be trusted, and the pre-submit tests will run:
+3. If you're **not** a member of the Continuous Engineering Project organization, a Reviewer Member checks that the pull request is safe to test. If so, they comment `/ok-to-test`. Pull requests by  organization members do not need this step. Now the pull request is considered to be trusted.
+4. The pre-submit tests will run:
 
-    1. Automatic tests run.
-    1. If tests fail, resolve issues by pushing edits to your pull request branch
-    1. If the failure is a flake, anyone on trusted pull requests can comment `/retest` to rerun failed tests
+    1. Auto matic tests run.
+    2. If tests fail, resolve issues by pushing edits to your pull request branch
+    3. If the failure is a flake, anyone on trusted pull requests can comment `/retest` to rerun failed tests
 
-1. Reviewer suggests edits
-1. Push edits to your pull request branch
-1. Repeat the prior two steps as needed until reviewer(s) add `/lgtm` label
-1. (Optional) Some reviewers prefer that you squash commits at this step
-1. Follow the bot suggestions to assign an OWNER who will add the `/approve` label to the pull request
+5. Reviewer suggests edits
+6. Push edits to your pull request branch
+7. Repeat the prior two steps as needed until reviewer(s) add `/lgtm` label
+8. You squash commits at this step
+9. Follow the bot suggestions to assign an OWNER who will add the `/approve` label to the pull request
 
 Once the tests pass, and the reviewer adds the `lgtm` and `approved` labels, the pull request enters the final merge pool. The merge pool is needed to make sure no incompatible changes have been introduced by other pull requests since the tests were last run on your pull request.
 
@@ -70,7 +101,7 @@ Tide will manage the merge pool automatically. It uses GitHub queries to select 
 
 That's the last step. Your pull request is now merged.
 
-## Marking Unfinished Pull Requests
+### Marking Unfinished Pull Requests
 
 If you want to solicit reviews before the implementation of your pull request is complete, you should hold your pull request to ensure that Tide does not pick it up and attempt to merge it. There are two methods to achieve this:
 
@@ -79,12 +110,12 @@ If you want to solicit reviews before the implementation of your pull request is
 
 The GitHub robots will add and remove the `do-not-merge/hold` label as you use the comment commands and the `do-not-merge/work-in-progress` label as you edit your title. While either label is present, your pull request will not be considered for merging.
 
-## Comment Commands Reference
+### Comment Commands Reference
 
-[The commands doc][BotCmd] contains a reference for all comment commands.
+[The commands doc][ChatOps] contains a reference for all comment commands.
 
 
-## How the Tests Work
+### How the Tests Work
 
 The end-to-end tests will post the status results to the pull request. If an e2e test fails,
 `@ceProject-bot` will comment on the pull request with the test history and the
@@ -92,14 +123,14 @@ comment-command to re-run that test. e.g.
 
 > The following tests failed, say /retest to rerun them all.
 
-# Why was my pull request closed?
+## Why was my pull request closed?
 
 Pull requests older than 90 days will be closed. Exceptions can be made for pull requests that have active review comments, or that are awaiting other dependent pull requests. Closed pull requests are easy to recreate, and little work is lost by closing a pull request that subsequently needs to be reopened. We want to limit the total number of pull requests in flight to:
 * Maintain a clean project
 * Remove old pull requests that would be difficult to rebase as the underlying code has changed over time
 * Encourage code velocity
 
-# Why is my pull request not getting reviewed?
+## Why is my pull request not getting reviewed?
 
 A few factors affect how long your pull request might wait for review.
 
@@ -111,7 +142,7 @@ There is a detailed rundown of best practices, including how to avoid too-length
 
 But, if you've already followed the best practices and you still aren't getting any pull request love, here are some things you can do to move the process along:
 
-   * Make sure that your pull request has an assigned reviewer (assignee in GitHub). If not, reply to the pull request comment stream asking for a reviewer to be assigned. This is done via a [bot command][ProwCmd] (the bot may have suggestions for this) and looks like this: `/assign @username`.
+   * Make sure that your pull request has an assigned reviewer (assignee in GitHub). If not, reply to the pull request comment stream asking for a reviewer to be assigned. This is done via a [bot command][ChatOps] (the bot may have suggestions for this) and looks like this: `/assign @username`.
 
    * Ping the assignee (@username) on the pull request comment stream, and ask for an estimate of when they can get to the review.
 
@@ -125,14 +156,14 @@ But, if you've already followed the best practices and you still aren't getting 
 
 Read on to learn more about how to get faster reviews by following best practices.
 
-# Best Practices for Faster Reviews
+## Best Practices for Faster Reviews
 
 You've just had a brilliant idea on how to make project better. Let's call that idea Feature-X. Feature-X is not even that complicated. You have a pretty good idea of how to implement it. You jump in and implement it, fixing a bunch of stuff along the way. You send your pull request - this is awesome! And it sits. And sits. A week goes by and nobody reviews it. Finally, someone offers a few comments, which you fix up and wait for more review. And you wait. Another week or two go by. This is horrible.
 
 Let's talk about best practices so your pull request gets reviewed quickly.
 
 
-## 1. Is the feature wanted? Create a Feature Request Issue
+### 1. Is the feature wanted? Create a Feature Request Issue
 Are you sure Feature-X is something the project team wants or will accept? Is it implemented to fit with other changes in flight? Are you willing to bet a few days or weeks of work on it?
 
 It's better to get confirmation beforehand.
@@ -140,7 +171,7 @@ It's better to get confirmation beforehand.
 Even for small changes, it is often a good idea to gather feedback on an issue you filed, or even simply ask in the appropriate Slack channel to invite discussion and feedback from code owners.
 
 
-## 2. Smaller Is Better: Small Commits, Small Pull Requests
+### 2. Smaller Is Better: Small Commits, Small Pull Requests
 
 Small commits and small pull requests get reviewed faster and are more likely to be correct than big ones.
 
@@ -168,7 +199,7 @@ We want every pull request to be useful on its own, so use your best judgment on
 
 As a rule of thumb, if your pull request is directly related to Feature-X and nothing else, it should probably be part of the Feature-X pull request. If you can explain why you are doing seemingly no-op work ("it makes the Feature-X change easier, I promise") we'll probably be OK with it. If you can imagine someone finding value independently of Feature-X, try it as a pull request. (Do not link pull requests by `#` in a commit description, because GitHub creates lots of spam. Instead, reference other pull requests via the pull request your commit is in.)
 
-## 3. Open a Different pull request for Fixes and Generic Features
+### 3. Open a Different pull request for Fixes and Generic Features
 
 **Put changes that are unrelated to your feature into a different pull request.**
 
@@ -182,7 +213,7 @@ For example, if you find yourself touching a lot of modules, think about the dep
 
 Likewise, if Feature-X is similar in form to Feature-W which was checked in last month, and you're duplicating some tricky stuff from Feature-W, consider refactoring the core logic out and using it in both Feature-W and Feature-X. (Do that in its own commit or pull request, please.)
 
-## 4. Comments Matter
+### 4. Comments Matter
 
 In your code, if someone might not understand why you did something (or you won't remember why later), comment it. Many code-review comments are about this exact issue.
 
@@ -190,39 +221,40 @@ If you think there's something pretty obvious that we could follow up on, add a 
 
 Read up on [GoDoc][GoDoc] - follow those general rules for comments.
 
-## 5. Test
+### 5. Test
 
 Nothing is more frustrating than starting a review, only to find that the tests are inadequate or absent. Very few pull requests can touch code and NOT touch tests.
 
 If you don't know how to test Feature-X, please ask!  We'll be happy to help you design things for easy testing or to suggest appropriate test cases.
 
-## 6. Squashing and Commit Titles
+### 6. Squashing and Commit Titles
 
 Your reviewer has finally sent you feedback on Feature-X.
 
-Make the fixups, and don't squash yet. Put them in a new commit, and re-push. That way your reviewer can look at the new commit on its own, which is much faster than starting over.
+Make the fixes, and don't squash yet. Put them in a new commit, and re-push. That way your reviewer can look at the new commit on its own, which is much faster than starting over.
 
 We might still ask you to clean up your commits at the very end for the sake of a more readable history, but don't do this until asked: typically at the point where the pull request would otherwise be tagged `LGTM`.
 
+Follow the [Commit message guidelines](./DEV_GUIDE.md#commit-message-guidelines) for your commit title.
 Each commit should have a good title line (<70 characters) and include an additional description paragraph describing in more detail the change intended.
 
 **General squashing guidelines:**
 
 * Sausage => squash
 
- Do squash when there are several commits to fix bugs in the original commit(s), address reviewer feedback, etc. Really we only want to see the end state and commit message for the whole pull request.
+Do squash when there are several commits to fix bugs in the original commit(s), address reviewer feedback, etc. Really we only want to see the end state and commit message for the whole pull request.
 
 * Layers => don't squash
 
- Don't squash when there are independent changes layered to achieve a single goal. For instance, writing a code munger could be one commit, applying it could be another, and adding a precommit check could be a third. One could argue they should be separate pull requests, but there's really no way to test/review the munger without seeing it applied, and there needs to be a precommit check to ensure the munged output doesn't immediately get out of date.
+Don't squash when there are independent changes layered to achieve a single goal. For instance, writing a code nugget could be one commit, applying it could be another, and adding a pre-commit check could be a third. One could argue they should be separate pull requests, but there's really no way to test/review the nugget without seeing it applied, and there needs to be a pre-commit check to ensure the munged output doesn't immediately get out of date.
 
 A commit, as much as possible, should be a single logical change.
 
-## 7. KISS, YAGNI, MVP, etc.
+### 7. KISS, YAGNI, MVP, etc.
 
 Sometimes we need to remind each other of core tenets of software design - Keep It Simple, You Aren't Gonna Need It, Minimum Viable Product, and so on. Adding a feature "because we might need it later" is antithetical to software that ships. Add the things you need NOW and (ideally) leave room for things you might need later - but don't implement them now.
 
-## 8. It's OK to Push Back
+### 8. It's OK to Push Back
 
 Sometimes reviewers make mistakes. It's OK to push back on changes your reviewer requested. If you have a good reason for doing something a certain way, you are absolutely allowed to debate the merits of a requested change. Both the reviewer and reviewer should strive to discuss these issues in a polite and respectful manner.
 
@@ -230,15 +262,15 @@ You might be overruled, but you might also prevail. We're pretty reasonable peop
 
 Another phenomenon of open-source projects (where anyone can comment on any issue) is the dog-pile - your pull request gets so many comments from so many people it becomes hard to follow. In this situation, you can ask the primary reviewer (assignee) whether they want you to fork a new pull request to clear out all the comments. You don't HAVE to fix every issue raised by every person who feels like commenting, but you should answer reasonable comments with an explanation.
 
-## 9. Common Sense and Courtesy
+### 9. Common Sense and Courtesy
 
 No document can take the place of common sense and good taste. Use your best judgment, while you put a bit of thought into how your work can be made easier to review. If you do these things your pull requests will get merged with less friction.
 
-## 10. Trivial Edits
+### 10. Trivial Edits
 
 Each incoming Pull Request needs to be reviewed, checked, and then merged.
 
-While automation helps with this, each contribution also has an engineering cost. Therefore it is appreciated if you do NOT make trivial edits and fixes, but instead focus on giving the entire file a review.
+While automation helps with this, each contribution also has an engineering cost. Therefore, it is appreciated if you do NOT make trivial edits and fixes, but instead focus on giving the entire file a review.
 
 If you find one grammatical or spelling error, it is likely there are more in that file, you can really make your Pull Request count by checking formatting, checking for broken links, and fixing errors and then submitting all the fixes at once to that file.
 
@@ -256,7 +288,6 @@ If you find one grammatical or spelling error, it is likely there are more in th
 [GitHubTeam]: https://github.com/orgs/ContinuousEngineeringProject/teams
 [GoDoc]: https://blog.golang.org/godoc-documenting-go-code
 [MergePool]: https://prow.k8s.io/tide
-[ProwCmd]: https://prow.k8s.io/command-help
+[ChatOps]: https://jenkins-x.io/v3/develop/reference/chatops/
 [PRDashboard]: https://prow.k8s.io/pr
-[BotCmd]: https://go.k8s.io/bot-commands
 

@@ -10,170 +10,60 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ContinuousEngineeringProject_terraform-google-factory&metric=alert_status)](https://sonarcloud.io/dashboard?id=ContinuousEngineeringProject_terraform-google-factory)
 
 ---
+[FAQ](/docs/contributors/FAQ.md) | [Troubleshooting Guide](/docs/contributors/TROUBLESHOOTING.md) | [Glossary](/docs/contributors/GLOSSARY.md)
 
-This repo contains a [Terraform](https://www.terraform.io/) module for provisioning the Continuous Engineering Factory on [Google Cloud](https://cloud.google.com/).
+This repository contains a [Terraform](https://www.terraform.io/) module for provisioning the Continuous Engineering Factory on [Google Cloud](https://cloud.google.com/).
 
 <!-- TOC -->
-
-- [What is a Terraform module](#what-is-a-terraform-module)
-- [How do you use this module](#how-do-you-use-this-module)
-    - [Prerequisites](#prerequisites)
-    - [Inputs](#inputs)
-    - [Outputs](#outputs)
-    - [Configuring a Terraform backend](#configuring-a-terraform-backend)
-- [FAQ](#faq)
-    - [How do I get the latest version of the terraform-google-factory module](#how-do-i-get-the-latest-version-of-the-terraform-google-factory-module)
-    - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
-    - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
-- [Development](#development)
-    - [Releasing](#releasing)
+- [Compatibility](#compatibility)
+- [Usage](#usage)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
+- [Caveats](#caveats)
 - [Contributing](#contributing)
 - [Versioning](#versioning)
 - [License](#license)
-
 <!-- /TOC -->
 
-## What is a Terraform module
+## Compatibility
+This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+. If you find incompatibilities using Terraform >=0.13, please open an issue.
 
-A Terraform "module" refers to a self-contained package of Terraform configurations that are managed as a group.
-For more information around modules refer to the Terraform [documentation](https://www.terraform.io/docs/modules/index.html).
+## Usage
+There are multiple examples included in the [examples](../examples) folder but a simple usage is as follows:
 
-## How do you use this module
+```hcl
+module "project-factory" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 10.1"
 
-### Prerequisites
+  name                 = "pf-test-1"
+  random_project_id    = true
+  org_id               = "1234567890"
+  usage_bucket_name    = "pf-test-1-usage-report-bucket"
+  usage_bucket_prefix  = "pf/test/1/integration"
+  billing_account      = "ABCDEF-ABCDEF-ABCDEF"
+  svpc_host_project_id = "shared_vpc_host_name"
 
-<!-- ToDo: Update with the local prerequisites -->
-
-Ensure you have the following binaries installed:
-- `gcloud`
-- `kubectl` ~> 1.14.0
-  - `kubectl` comes bundled with the Cloud SDK
-- `terraform` ~> 0.12.0
-  - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
-- `terraform-docs`
-  - Terraform-docs installation instructions can be found [here](https://terraform-docs.io/user-guide/installation/)
-
-<!-- ToDo: Update with docker prerequisites -->
-Alternatively you could run from the docker image provided in the project.
-- `docker`
-  - Docker installation instructions can be found [here](https://docs.docker.com/engine/install/)
--->
-<!--
-You also need to install the Cloud SDK, in particular `gcloud`.
-You find instructions on how to install and authenticate in the [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide as well.
-
-Once you have `gcloud` installed, you need to create [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login) by running:
-
-```bash
-gcloud auth application-default login
+  shared_vpc_subnets = [
+    "projects/base-project-196723/regions/us-east1/subnetworks/default",
+    "projects/base-project-196723/regions/us-central1/subnetworks/default",
+    "projects/base-project-196723/regions/us-central1/subnetworks/subnet-1",
+  ]
+}
 ```
-
-Alternatively, you can export the environment variable _GOOGLE\\_APPLICATION\\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
--->
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_billing_account"></a> [billing\_account](#input\_billing\_account) | The ID of the billing account to associate this project with | `string` | n/a | yes |
-| <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | The name of the GCP project to use | `string` | n/a | yes |
 | <a name="input_org_id"></a> [org\_id](#input\_org\_id) | The organization ID. | `string` | n/a | yes |
 
 ## Outputs
 
 No outputs.
 
-<!--
-## Using a custom domain
-
-If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _apex\\_domain_ and \_tls\\_email\_.
-\_apex\\_domain\_ is the fully qualified domain name you want to use and _tls\\_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
-
-Before you apply the Terraform configuration, you also need to create a [Cloud DNS managed zone](https://cloud.google.com/dns/zones), with the DNS name in the managed zone matching your custom domain name, for example in the case of _example.jenkins-x.rocks_ as domain:
-
-[Creating a Managed Zone](./images/create\_managed\_zone.png)
-
-When creating the managed zone, a set of DNS servers get created which you need to specify in the DNS settings of your DNS registrar.
-
-[DNS settings of Managed Zone](./images/managed\_zone\_details.png)
-
-It is essential that before you run `jx boot`, your DNS servers settings are propagated, and your domain resolves.
-You can use [DNS checker](https://dnschecker.org/) to check whether your domain settings have propagated.
-
-When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) together with [cert-manager](https://github.com/jetstack/cert-manager) to create A record entries in your managed zone for the various exposed applications.
-
-If _apex\_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
--->
-
-## Configuring a Terraform backend
-
-A "[backend](https://www.terraform.io/docs/backends/index.html)" in Terraform determines how state is loaded and how an operation such as _apply_ is executed.
-By default, Terraform uses the _local_ backend which keeps the state of the created resources on the local file system.
-This is problematic since sensitive information will be stored on disk, and it is not possible to share state across a team.
-When working with Google Cloud a good choice for your Terraform backend is the [\_gcs\_ backend](https://www.terraform.io/docs/backends/types/gcs.html)  which stores the Terraform state in a Google Cloud Storage bucket.
-The [examples](./examples) directory of this repository contains configuration examples for using the gcs backed with and without optionally configured customer supplied encryption key.
-
-To use the gcs backend you will need to create the bucket upfront.
-You can use `gsutil` to create the bucket:
-
-```sh
-gsutil mb gs://<my-bucket-name>/
-```
-
-It is also recommended to enable versioning on the bucket as an additional safety net in case of state corruption.
-
-```sh
-gsutil versioning set on gs://<my-bucket-name>
-```
-
-You can verify whether a bucket has versioning enabled via:
-
-```sh
-gsutil versioning get gs://<my-bucket-name>
-```
-
-## FAQ
-
-### How do I get the latest version of the module
-
-```sh
-terraform init -upgrade
-```
-
-### How to I specify a specific google provider version
-
-```yaml
-provider "google" {
-  version = "~> 2.12.0"
-  project = var.gcp_project
-}
-
-provider "google-beta" {
-  version = "~> 2.12.0"
-  project = var.gcp_project
-}
-```
-
-### Why do I need Application Default Credentials
-
-The recommended way to authenticate to the Google Cloud API is by using a [service account](https://cloud.google.com/docs/authentication/getting-started).
-This allows for authentication regardless of where your code runs.
-This Terraform module expects authentication via a service account key.
-You can either specify the path to this key directly using the _GOOGLE\_APPLICATION\_CREDENTIALS_ environment variable or you can run `gcloud auth application-default login`.
-In the latter case `gcloud` obtains user access credentials via a web flow and puts them in the well-known location for Application Default Credentials (ADC), usually \_~/.config/gcloud/application\_default\_credentials.json\_.
-
-## Releasing
-
-At the moment there is no release pipeline defined in [jenkins-x.yml](./jenkins-x.yml).
-A Terraform release does not require building an artifact, only a tag needs to be created and pushed.
-To make this task easier and there is a helper script `release.sh` which simplifies this process and creates the changelog as well:
-
-```sh
-./scripts/release.sh
-```
-
-This can be executed on demand whenever a release is required.
-For the script to work the environment variable _$GH\_TOKEN_ must be exported and reference a valid GitHub API token.
+## Caveats
 
 ## Contributing
 

@@ -39,7 +39,7 @@ gcloud auth application-default login
 
 Alternatively, you can export the environment variable _GOOGLE\_APPLICATION\_CREDENTIALS_ referencing the path to a Google Cloud [service account key file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
 ## Contribution workflow
-<!-- ToDo: Simplify Contribution Workflow -->
+<!-- ToDo: add Contribution Workflow content-->
 
  - Develop the change.
  - Submit a pull request.

@@ -4,12 +4,31 @@
 
 # ToDo: re-write the release script
 
-set -e
-
-if [ -z "$GH_TOKEN" ]
-then
-    echo "A valid GitHub token must be set via the environment variable GH_TOKEN"
-    exit 1
+if [ -n "$(git status --porcelain)" ]; then
+  echo -e "\nError, repository dirty, please commit or stash your changes.\n"
+  exit 1
 fi
 
-docker run -w /app --rm -v $(pwd):/app -e GH_TOKEN=$GH_TOKEN semantic-release/semantic-release:19.0.0-beta.2 -r https://github.com/ContinuousEngineeringProject/terraform-google-factory --no-ci
+NEW_VERSION=$(grep '##' CHANGELOG.md | head -n 1 | cut -d' ' -f2)
+NEW_RELEASE_NAME=v$NEW_VERSION
+CURRENT_RELEASE_NAME=$(git describe --abbrev=0 --tags)
+
+if [ "$NEW_RELEASE_NAME" == "$CURRENT_RELEASE_NAME" ]; then
+  echo -e "\nLatest version already released.\n"
+  echo -e "If this is not so, make sure CHANGELOG.md is updated as necessary.\n"
+  exit 1
+fi
+
+echo -e "\nUpdating usage examples in README to use $NEW_RELEASE_NAME and commiting...\n"
+
+sed -i.bak -e "s/$CURRENT_RELEASE_NAME/$NEW_RELEASE_NAME/g" README.md && rm README.md.bak
+
+git checkout main && \
+  git add README.md && \
+  git commit -m "Update usage examples in README to use $NEW_RELEASE_NAME." > /dev/null 2>&1
+
+echo -e "Releasing $NEW_RELEASE_NAME...\n"
+
+git tag -a "$NEW_RELEASE_NAME" -m "$NEW_RELEASE_NAME" && \
+  git push origin main --verbose && \
+  git push origin "$NEW_RELEASE_NAME" --verbose

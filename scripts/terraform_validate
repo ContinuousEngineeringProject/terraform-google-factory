@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# The first and only argument to this script is the directory containing *.tf
+# files to validate.  This directory is assumed to be a root module.
+
+cd "$1"
+terraform init -backend=false
+terraform validate

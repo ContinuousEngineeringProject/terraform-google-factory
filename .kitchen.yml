@@ -1,0 +1,65 @@
+# ToDo: create tests
+
+---
+provisioner:
+  name: terraform
+
+platforms:
+  - name: local
+
+verifier:
+  name: terraform
+  color: false
+  systems:
+    - name: system
+      backend: local
+
+suites:
+  - name: minimal
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/minimal
+  - name: vpc_sc_project
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/vpc_sc_project
+  - name: fabric_project
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/fabric_project
+  - name: app_engine
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/app_engine
+  - name: budget
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/budget
+  - name: dynamic_shared_vpc
+    driver:
+      name: terraform
+      verify_version: false
+      command_timeout: 1800
+      root_module_directory: test/fixtures/dynamic_shared_vpc
+    verifier:
+      name: terraform
+      color: true
+      systems:
+        - name: inspec-gcp
+          backend: gcp
+          controls:
+            - secondary
+        - name: local
+          backend: local
+          controls:
+            - svpc

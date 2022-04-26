@@ -1,0 +1,6 @@
+output:
+  file: "values.auto.tfvars"
+  mode: replace
+  template: |-
+    resource_labels = { "provider" : "factory" }
+    {{ .Content }}

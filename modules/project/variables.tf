@@ -1,25 +1,12 @@
-// ToDo: create required variables
-// ----------------------------------------------------------------------------
-// Required Variables
-// ----------------------------------------------------------------------------
-variable "org_id" {
-  description = "The organization ID."
-  type        = string
-}
-
-variable "billing_account" {
-  description = "The ID of the billing account to associate this project with"
-  type        = string
-}
-
-// ToDo: create optional variables
-// ----------------------------------------------------------------------------
-// Optional Variables
-// ----------------------------------------------------------------------------
 variable "random_project_id" {
   description = "Adds a suffix of 4 random characters to the `project_id`"
   type        = bool
   default     = false
+}
+
+variable "org_id" {
+  description = "The organization ID."
+  type        = string
 }
 
 variable "domain" {
@@ -49,6 +36,11 @@ variable "enable_shared_vpc_host_project" {
   description = "If this project is a shared VPC host project. If true, you must *not* set svpc_host_project_id variable. Default is false."
   type        = bool
   default     = false
+}
+
+variable "billing_account" {
+  description = "The ID of the billing account to associate this project with"
+  type        = string
 }
 
 variable "folder_id" {
@@ -233,6 +225,22 @@ variable "budget_alert_spent_percents" {
   default     = [0.5, 0.7, 1.0]
 }
 
+variable "budget_alert_spend_basis" {
+  description = "The type of basis used to determine if spend has passed the threshold"
+  type        = string
+  default     = "CURRENT_SPEND"
+}
+
+variable "budget_labels" {
+  description = "A single label and value pair specifying that usage from only this set of labeled resources should be included in the budget."
+  type        = map(string)
+  default     = {}
+  validation {
+    condition     = length(var.budget_labels) <= 1
+    error_message = "Only 0 or 1 labels may be supplied for the budget filter."
+  }
+}
+
 variable "vpc_service_control_attach_enabled" {
   description = "Whether the project will be attached to a VPC Service Control Perimeter"
   type        = bool
@@ -251,8 +259,8 @@ variable "grant_services_security_admin_role" {
   default     = false
 }
 
-variable "grant_services_network_role" {
-  description = "Whether or not to grant service agents the network roles on the host project"
+variable "grant_network_role" {
+  description = "Whether or not to grant networkUser role on the host project/subnets"
   type        = bool
   default     = true
 }
@@ -260,10 +268,11 @@ variable "grant_services_network_role" {
 variable "consumer_quotas" {
   description = "The quotas configuration you want to override for the project."
   type = list(object({
-    service = string,
-    metric  = string,
-    limit   = string,
-    value   = string,
+    service    = string,
+    metric     = string,
+    dimensions = map(string),
+    limit      = string,
+    value      = string,
   }))
   default = []
 }
@@ -272,4 +281,16 @@ variable "default_network_tier" {
   description = "Default Network Service Tier for resources created in this project. If unset, the value will not be modified. See https://cloud.google.com/network-tiers/docs/using-network-service-tiers and https://cloud.google.com/network-tiers."
   type        = string
   default     = ""
+}
+
+variable "essential_contacts" {
+  description = "A mapping of users or groups to be assigned as Essential Contacts to the project, specifying a notification category"
+  type        = map(list(string))
+  default     = {}
+}
+
+variable "language_tag" {
+  description = "Language code to be used for essential contacts notifications"
+  type        = string
+  default     = "en-US"
 }

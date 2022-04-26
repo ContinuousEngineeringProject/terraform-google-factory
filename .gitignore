@@ -21,11 +21,12 @@ gen
 *.out
 
 # Terraform
-.terraform/
+**/.terraform/*
 *.tfstate
 *.tfstate*
-*.auto.tfvars
 .terraform.lock.hcl
+terraform.tfvars
+*.auto.tfvars
 
 # Other files
 credentials.json

@@ -2,8 +2,14 @@
 // ----------------------------------------------------------------------------
 // Required Variables
 // ----------------------------------------------------------------------------
-variable "gcp_project" {
-  description = "The name of the GCP project to use"
+
+variable "org_id" {
+  description = "The organization ID."
+  type        = string
+}
+
+variable "billing_account" {
+  description = "The ID of the billing account to associate this project with"
   type        = string
 }
 

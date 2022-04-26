@@ -1,7 +1,6 @@
-SHELL_SPEC_DIR ?= /var/tmp
-TERRAFORM_VAR_FILE = terraform.tfvars
+#!/usr/bin/env bash
 
-.DEFAULT_GOAL := help
+TERRAFORM_VAR_FILE = terraform.tfvars
 
 .PHONY: help
 help:
@@ -35,27 +34,31 @@ tf-version: ## checks the terraform version
 	terraform version
 
 .PHONY: lint
-lint: init tf-version fmt ## Verifies Terraform syntax
+lint: init tf-version ## Verifies Terraform syntax
 	terraform validate
 
 .PHONY: fmt
 fmt: ## Reformat Terraform files according to standard
 	terraform fmt -check -diff -recursive
 
-.PHONY: test
-test: ## Runs ShellSpec tests
-	shellspec --format document
-
-.PHONY: test-focus
-test-focus: ## Runs focused ShellSpec tests
-	shellspec --focus --format document
-
 .PHONY: clean
 clean: ## Deletes temporary files
 	@rm -rf report
-	@rm -f jx-requirements.yml
 
 .PHONY: generate-readme
-readme: ## Updates README.md and markdown tables for in and output of this module
-	terraform-docs .
+generate-readme: ##  Generate all the README.md for the root module, submodules, and example modules
+	terraform-docs . --recursive
+	terraform-docs . --recursive --recursive-path=examples
 
+.PHONY: generate-tfvars
+generate-tfvars: ##   Generate terraform.tfvars of inputs
+	terraform-docs tfvars hcl . --recursive --config=.tfvars.terraform-docs.yml
+	terraform-docs tfvars hcl . --recursive --recursive-path=examples --config=.tfvars.terraform-docs.yml
+
+
+.PHONY: pr-prep
+pr-prep: ## Run PR prep tasks
+## TODO: Fix and Add more PR prep tasks
+	lint
+	fmt
+	generate-readme

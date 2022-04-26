@@ -148,6 +148,6 @@ Good examples of OWNERS usage:
 - OWNERS files that are regularly updated (at least once per release)
 
 [GO-REGEX]: https://golang.org/pkg/regexp/#pkg-overview
-[MERGEWORKFLOW]: REVIEWING.md#the-testing-and-merge-workflow
+[MERGEWORKFLOW]: PR_GUIDE.md#the-testing-and-merge-workflow
 [BOT]: https://github.com/ceProject-bot
 [CODEOWNERS]: https://help.github.com/articles/about-codeowners/

@@ -5,7 +5,7 @@
 set -e
 set -u
 
-PROJECT=terraform-test-261120
+PROJECT=terraform-google-factory-test
 ZONE=europe-west1-b
 CLUSTER_NAME=tf-${BRANCH_NAME}-${BUILD_NUMBER}
 CLUSTER_NAME=$( echo ${CLUSTER_NAME} | tr  '[:upper:]' '[:lower:]')

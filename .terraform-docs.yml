@@ -1,18 +1,13 @@
 formatter: "markdown table"
 
-header-from: ./docs/header.md
-footer-from: ./docs/footer.md
-
 sections:
   show:
-    - header
     - inputs
     - outputs
-    - footer
 
 output:
   file: "README.md"
-  mode: replace
+  mode: inject
 
 sort:
   enabled: true

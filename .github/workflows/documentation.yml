@@ -1,0 +1,49 @@
+name: Generate terraform docs
+on:
+  - pull_request
+  push:
+    branches:
+    - issue-*
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Generate root README.md
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: .
+          config-file: .terraform-docs.yml
+          output-file: README.md
+          output-method: inject
+
+      - name: Generate sub-module README.md
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: modules/
+          recursive: true
+          recursive-path: modules/
+          config-file: .terraform-docs.yml
+          output-file: README.md
+          output-method: inject
+
+      - name: Generate examples README.md
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: examples/
+          recursive: true
+          recursive-path: examples/
+          config-file: .terraform-docs.yml
+          output-file: README.md
+          output-method: inject
+
+      - name: Push changes to README.md
+        uses: terraform-docs/gh-actions@main
+        with:
+          git-push: "true"
+
+

@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 # Continuous Engineering Factory GKE Module
 
 [![License](https://img.shields.io/github/license/ContinuousEngineeringProject/terraform-google-factory)](https://github.com/ContinuousEngineeringProject/terraform-google-factory/blob/master/LICENSE)
@@ -32,7 +31,7 @@ This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0
 There are multiple examples included in the [examples](../examples) folder but a simple usage is as follows:
 
 ```hcl
-module "project-factory" {
+module "factory" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 10.1"
 
@@ -52,16 +51,9 @@ module "project-factory" {
 }
 ```
 
-## Inputs
+<!-- BEGIN_TF_DOCS -->
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_billing_account"></a> [billing\_account](#input\_billing\_account) | The ID of the billing account to associate this project with | `string` | n/a | yes |
-| <a name="input_org_id"></a> [org\_id](#input\_org\_id) | The organization ID. | `string` | n/a | yes |
-
-## Outputs
-
-No outputs.
+<!-- END_TF_DOCS -->
 
 ## Caveats
 
@@ -84,4 +76,3 @@ Licensed under the MIT license - see the [LICENSE][LICENSE] file for details.
 [COC]: ../CODE\_OF\_CONDUCT.md
 [CONTRIB]: ../CONTRIBUTING.md
 [REPOTAGS]: https://github.com/continuousengineeringproject/terraform-google-factory/tags
-<!-- END_TF_DOCS -->
